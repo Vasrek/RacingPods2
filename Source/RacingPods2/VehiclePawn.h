@@ -80,6 +80,10 @@ public:
 		float GearSwitchTime = 0.15f;
 	UPROPERTY(Category = Gearbox, EditDefaultsOnly, BlueprintReadOnly)
 		float GearAutoBoxLatency = 1.0f;
+
+	// Air Physics
+	void UpdateInAirControl(float DeltaTime);
+
 protected:
 
 	// Spring arm for the camera

@@ -33,6 +33,26 @@ public:
 	void OnHandbrakePressed();
 	void OnHandbrakeReleased();
 
+	// Respawn
+	void setRespawnLocation(FVector LocToSave);
+	FVector getRespawnLocation();
+
+	// Lap
+	void increaseLap();
+	UFUNCTION(Category = Race, BlueprintCallable, BlueprintPure)
+		int getCurrentLap();
+	UPROPERTY(Category = Race, EditAnywhere, BlueprintReadOnly)
+		int maxCurrentLap = 3;
+
+	// EndGame + Timer
+	void endGame();
+	void startTimer();
+
+	UPROPERTY(Category = Timer, EditDefaultsOnly, BlueprintReadOnly)
+		int seconds;
+
+
+
 	// Tire variables
 	UPROPERTY(Category = Tire, EditDefaultsOnly, BlueprintReadOnly)
 	float MinTireLoad = 0.0f;
@@ -93,4 +113,8 @@ protected:
 	// Camera
 	UPROPERTY(Category = Camera, EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* Camera;
+
+private:
+	FVector RespawnLocation;
+	int currentLap = 0;
 };

@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "WheeledVehicleMovementcomponent4W.h"
+#include "Kismet/GameplayStatics.h"
 
 AVehiclePawn::AVehiclePawn()
 {
@@ -106,6 +107,45 @@ void AVehiclePawn::OnHandbrakePressed()
 void AVehiclePawn::OnHandbrakeReleased()
 {
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
+}
+
+void AVehiclePawn::setRespawnLocation(FVector LocToSave)
+{
+	RespawnLocation = LocToSave;
+}
+
+FVector AVehiclePawn::getRespawnLocation()
+{
+	return FVector(RespawnLocation);
+}
+
+void AVehiclePawn::increaseLap()
+{
+	currentLap++;
+	if (currentLap == 1)
+	{
+		FTimerHandle UnusedHandle;
+		GetWorldTimerManager().SetTimer(UnusedHandle, this, &AVehiclePawn::startTimer, 1, true);
+	}
+	if (currentLap == maxCurrentLap)
+	{
+		endGame();
+	}
+}
+
+int AVehiclePawn::getCurrentLap()
+{
+	return currentLap;
+}
+
+void AVehiclePawn::endGame()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), FName("MainMenu"), true);
+}
+
+void AVehiclePawn::startTimer()
+{
+	seconds++;
 }
 
 void AVehiclePawn::UpdateInAirControl(float DeltaTime)
